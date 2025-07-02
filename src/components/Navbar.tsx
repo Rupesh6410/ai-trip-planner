@@ -33,10 +33,7 @@ export function NavbarDemo() {
       name: "Generate-Trips",
       link: "/generate-trip",
     },
-    {
-      name: "Contact",
-      link: "/contact",
-    },
+
   ];
 
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

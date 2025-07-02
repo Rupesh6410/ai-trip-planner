@@ -15,10 +15,40 @@ import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
+import { Loader2 } from "lucide-react";
+import { MultiStepLoader as Loader } from "../../components/ui/multi-step-loader";
+import { IconSquareRoundedX } from "@tabler/icons-react";
 
 export default function GenerateTripPage() {
   const { data: session, status } = useSession();
   const router = useRouter();
+
+  const loadingStates = [
+    {
+      text: "Wait",
+    },
+    {
+      text: "Planning your trip",
+    },
+    {
+      text: "Generating itinerary",
+    },
+    {
+      text: "Fetching Hotels and Hostels",
+    },
+    {
+      text: "Good things take time",
+    },
+    {
+      text: "Remember pro tips",
+    },
+    {
+      text: "Almost there",
+    },
+    {
+      text: "Hope you will enjoy it",
+    },
+  ];
 
   useEffect(() => {
     if (!session) {
@@ -30,7 +60,7 @@ export default function GenerateTripPage() {
     destination: "",
     groupType: "solo",
     numberOfPeople: 1,
-    days: 1,
+    days: 2,
     budget: 10000,
   });
 
@@ -157,9 +187,26 @@ export default function GenerateTripPage() {
 
             <Separator />
 
-            <Button className="w-full bg-blue-600" type="submit" disabled={loading}>
-              {loading ? "Generating..." : "Generate Itinerary"}
+            
+
+            <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
+
+            <Button  onClick={() => setLoading(true)}
+        className="bg-[#39C3EF] hover:bg-[#39C3EF]/90 text-black mx-auto text-sm md:text-base transition font-medium duration-200 h-10 rounded-lg px-8 flex items-center justify-center"
+        style={{
+          boxShadow:
+            "0px -1px 0px 0px #ffffff40 inset, 0px 1px 0px 0px #ffffff40 inset",
+        }} type="submit" >
+              Generate Itinerary
             </Button>
+            {loading && (
+        <button
+          className="fixed top-4 right-4 text-black dark:text-white z-[120]"
+          onClick={() => setLoading(false)}
+        >
+          <IconSquareRoundedX className="h-10 w-10" />
+        </button>
+      )}
           </form>
         </CardContent>
       </Card>

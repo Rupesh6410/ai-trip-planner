@@ -10,6 +10,7 @@ export function HeroWithMap() {
   const [isMapReady, setIsMapReady] = useState(false);
 
   useEffect(() => {
+  
     const timeout = setTimeout(() => setIsMapReady(true), 100);
     return () => clearTimeout(timeout);
   }, []);
@@ -17,7 +18,7 @@ export function HeroWithMap() {
   return (
     <section className="w-full py-20 md:py-28 bg-white dark:bg-black">
       <div className="max-w-6xl mx-auto px-4 text-center">
-        {/* Heading */}
+      
         <motion.h1
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -28,7 +29,7 @@ export function HeroWithMap() {
           <span className="text-blue-600">Powered by AI</span>
         </motion.h1>
 
-        {/* Subheading */}
+        
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -40,8 +41,8 @@ export function HeroWithMap() {
         </motion.p>
       </div>
 
-      {/* WorldMap + Loader */}
-      <div className="mt-12 px-4 min-h-[300px] md:min-h-[400px] flex items-center justify-center relative">
+      
+      <div className="mt-12 px-4 min-h-[300px] md:min-h-[400px] flex flex-col items-center justify-center relative">
         <AnimatePresence mode="wait">
           {!isMapReady ? (
             <motion.div
@@ -54,36 +55,38 @@ export function HeroWithMap() {
               <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
             </motion.div>
           ) : (
-            <motion.div
-              key="map"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.8 }}
-              className="w-full"
-            >
-              <WorldMap
-                dots={[
-                  { start: { lat: 40.7128, lng: -74.006 }, end: { lat: 48.8566, lng: 2.3522 } },
-                  { start: { lat: 28.6139, lng: 77.209 }, end: { lat: 43.1332, lng: 131.9113 } },
-                  { start: { lat: 51.5074, lng: -0.1278 }, end: { lat: -33.8688, lng: 151.2093 } },
-                  { start: { lat: -1.2921, lng: 36.8219 }, end: { lat: -34.6037, lng: -58.3816 } },
-                ]}
-              />
-            </motion.div>
+            <> 
+                          <motion.div
+                key="cta-button" 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.8, delay: 0.5 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                className="mt-10 flex justify-center" 
+              >
+                <Button onClick={() => signIn()} className="bg-blue-600 cursor-pointer hover:opacity-80 mb-4 ">Get Started</Button>
+              </motion.div>
+              <motion.div
+                key="map"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.8 }}
+                className="w-full"
+              >
+                <WorldMap
+                  dots={[
+                    { start: { lat: 40.7128, lng: -74.006 }, end: { lat: 48.8566, lng: 2.3522 } },
+                    { start: { lat: 28.6139, lng: 77.209 }, end: { lat: 43.1332, lng: 131.9113 } },
+                    { start: { lat: 51.5074, lng: -0.1278 }, end: { lat: -33.8688, lng: 151.2093 } },
+                    { start: { lat: -1.2921, lng: 36.8219 }, end: { lat: -34.6037, lng: -58.3816 } },
+                  ]}
+                />
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>
-
-      {/* CTA Button */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 1 }}
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.95 }}
-        className="mt-10 flex justify-center"
-      >
-      </motion.div>
     </section>
   );
 }

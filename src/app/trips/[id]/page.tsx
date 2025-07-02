@@ -5,7 +5,7 @@ import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Landmark, BedDouble, Lightbulb } from "lucide-react";
+import { Sparkles, Landmark, BedDouble, Lightbulb, LoaderPinwheel, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
@@ -31,7 +31,7 @@ export default function TripDetailsPage() {
   }, [params]);
 
   if (loading || !trip) {
-    return <div className="pt-24 text-center text-blue-600">Loading trip...</div>;
+    return <div className="flex items-center justify-center pt-24 text-center text-blue-600"><Loader2 className="animate-spin" size={30}/></div>;
   }
 
   return (
