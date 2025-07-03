@@ -3,16 +3,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
 import { prisma } from "../../../../../lib/prisma";
 
-// Define an interface for the route parameters to ensure correct typing
-interface RouteParams {
-  params: {
-    id: string;
-  };
-}
-
 export async function GET(
   req: NextRequest, // The incoming request object
-  { params }: RouteParams // Destructure params from the context object, using our defined interface
+  // Directly type the second argument with the expected structure
+  { params }: { params: { id: string } }
 ) {
   const session = await auth();
 
@@ -42,8 +36,9 @@ export async function GET(
 }
 
 export async function DELETE(
-  req: NextRequest, // The incoming request object (added for consistency)
-  { params }: RouteParams // Destructure params from the context object, using our defined interface
+  req: NextRequest, // The incoming request object
+  // Directly type the second argument with the expected structure
+  { params }: { params: { id: string } }
 ) {
   const session = await auth();
 
