@@ -5,12 +5,12 @@ import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Sparkles, Landmark, BedDouble, Lightbulb, LoaderPinwheel, Loader2 } from "lucide-react";
+import { Sparkles, Landmark, BedDouble, Lightbulb, Loader2 } from "lucide-react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
 export default function TripDetailsPage() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   const params = useParams();
   const [trip, setTrip] = useState<any>(null);
   const [loading, setLoading] = useState(true);

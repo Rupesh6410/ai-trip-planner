@@ -26,12 +26,13 @@ export default function TripsPage() {
   const [deletingId, setDeletingId] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!session) {
+    if (!session && status !== "loading") {
       router.replace("/api/auth/signin");
-    } else {
+    } else if (status === "authenticated") {
       fetchTrips();
     }
-  }, [status]);
+  }, [router, session, status]);
+  
 
   const fetchTrips = async () => {
     try {
