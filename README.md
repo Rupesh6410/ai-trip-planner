@@ -1,3 +1,6 @@
+https://ai-trip-planner-six-rose.vercel.app/
+
+
 # 🗺️ AI Trip Planner
 
 AI-powered travel planner that generates a personalized itinerary based on user preferences like destination, group type, budget, and duration.
