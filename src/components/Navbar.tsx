@@ -97,7 +97,8 @@ export function NavbarDemo() {
             ):(<NavbarButton
               onClick={() => {
                 setIsMobileMenuOpen(false);
-                signOut();
+                signOut({redirectTo:"/"})
+                ;
               }}
               variant="primary"
               className="w-full"
