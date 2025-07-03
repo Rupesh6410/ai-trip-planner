@@ -5,9 +5,11 @@ import { WorldMap } from "@/components/ui/world-map";
 import { motion, AnimatePresence } from "framer-motion";
 import { signIn } from "next-auth/react";
 import { Button } from "@/components/ui/button";
+import { useSession } from "next-auth/react";
 
 export function HeroWithMap() {
   const [isMapReady, setIsMapReady] = useState(false);
+  const { data: session } = useSession();
 
   useEffect(() => {
   
@@ -56,7 +58,8 @@ export function HeroWithMap() {
             </motion.div>
           ) : (
             <> 
-                          <motion.div
+            {}
+            {!session && <motion.div
                 key="cta-button" 
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -66,7 +69,7 @@ export function HeroWithMap() {
                 className="mt-10 flex justify-center" 
               >
                 <Button onClick={() => signIn()} className="bg-blue-600 cursor-pointer hover:opacity-80 mb-4 ">Get Started</Button>
-              </motion.div>
+              </motion.div>}
               <motion.div
                 key="map"
                 initial={{ opacity: 0 }}

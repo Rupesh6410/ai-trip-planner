@@ -190,7 +190,7 @@ export async function generateTripPlan({
     return parsedResult; // Return the parsed JSON object
   } catch (error ) {
     console.error("Error generating trip plan with Gemini:", error);
-    throw new Error(`Failed to generate trip plan`);
+    throw new Error(`Failed to generate trip plan)`);
   }
 }
 

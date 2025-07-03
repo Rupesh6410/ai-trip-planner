@@ -12,9 +12,53 @@ import { useRouter } from "next/navigation";
 export default function TripDetailsPage() {
   const { data: session } = useSession();
   const params = useParams();
-  const [trip, setTrip] = useState<any>(null);
+  const [trip, setTrip] = useState<TripRecord | null>(null);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
+
+  // types/trip.ts
+ type TripPlan = {
+  tripName: string;
+  overview: string;
+  estimatedLocalTravelCharges: string;
+  proTips: string[];
+  dailyItinerary: {
+    day: number;
+    theme: string;
+    activities: {
+      time: string;
+      description: string;
+      placeName: string;
+    }[];
+  }[];
+  accommodations: {
+    hotels: {
+      name: string;
+      description: string;
+      priceRange: string;
+      googleMapsLink: string;
+    }[];
+    hostels: {
+      name: string;
+      description: string;
+      priceRange: string;
+      googleMapsLink: string;
+    }[];
+  };
+};
+
+ type TripRecord = {
+  id: string;
+  userId: string;
+  destination: string;
+  groupType: string;
+  numberOfPeople: number;
+  days: number;
+  budget: number;
+  result: TripPlan;
+  createdAt: string;
+};
+
 
   useEffect(() => {
     if (!session) {
@@ -28,7 +72,7 @@ export default function TripDetailsPage() {
       setLoading(false);
     }
     if (params?.id) fetchTrip();
-  }, [params]);
+  }, [params , session, router]);
 
   if (loading || !trip) {
     return <div className="flex items-center justify-center pt-24 text-center text-blue-600"><Loader2 className="animate-spin" size={30}/></div>;
@@ -54,7 +98,7 @@ export default function TripDetailsPage() {
         </CardContent>
       </Card>
 
-      {trip.result.dailyItinerary.map((day: any) => (
+      {trip.result.dailyItinerary.map((day) => (
         <Card key={day.day} className="bg-blue-50 border-blue-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-blue-800">
@@ -63,7 +107,7 @@ export default function TripDetailsPage() {
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
-            {day.activities.map((activity: any, i: number) => (
+            {day.activities.map((activity, i: number) => (
               <div key={i} className="p-3 rounded-md bg-white shadow-sm">
                 <p className="text-sm font-semibold text-blue-600">{activity.time}</p>
                 <p className="text-base font-medium">{activity.placeName}</p>
@@ -87,7 +131,7 @@ export default function TripDetailsPage() {
               <div>
                 <h3 className="text-md font-semibold mb-1 text-green-600">Hostels</h3>
                 <ul className="list-disc ml-5 space-y-1 text-sm">
-                  {trip?.result?.accommodations?.hostels?.map((h: any, i: number) => (
+                  {trip?.result?.accommodations?.hostels?.map((h, i: number) => (
                     <li key={i}>
                       <a href={h.googleMapsLink} target="_blank" className="text-green-700 underline">
                         {h.name}
@@ -102,7 +146,7 @@ export default function TripDetailsPage() {
               <div>
                 <h3 className="text-md font-semibold mb-1 text-green-600">Hotels</h3>
                 <ul className="list-disc ml-5 space-y-1 text-sm">
-                  {trip?.result?.accommodations?.hotels?.map((h: any, i: number) => (
+                  {trip?.result?.accommodations?.hotels?.map((h, i: number) => (
                     <li key={i}>
                       <a href={h.googleMapsLink} target="_blank" className="text-green-700 underline">
                         {h.name}

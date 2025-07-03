@@ -23,13 +23,14 @@ export async function GET(
     }
 
     return NextResponse.json(trip);
-  } catch (err) {
+  } catch (error) {
+    console.error("Error fetching trip:", error);
     return NextResponse.json({"error": "Something went wrong" }, { status: 500 });
   }
 }
 
 export async function DELETE(
-  req: NextRequest,
+  
   { params }: { params: { id: string } }
 ) {
   const session = await auth();
@@ -56,7 +57,8 @@ export async function DELETE(
     });
 
     return NextResponse.json({ message: "Trip deleted successfully" });
-  } catch (err) {
+  } catch (error) {
+    console.error("Error deleting trip:", error);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }

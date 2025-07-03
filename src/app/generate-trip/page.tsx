@@ -45,13 +45,26 @@ export default function GenerateTripPage() {
     }
   }, [session, router]);
 
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<{
+    destination: string;
+    groupType: string;
+    numberOfPeople?: number;
+    days?: number;
+    budget?: number;
+  }>({
     destination: "",
     groupType: "solo",
-    numberOfPeople: 1,
-    days: 2,
-    budget: 10000,
+    numberOfPeople: 1, // default for solo
   });
+
+  useEffect(() => {
+    if (form.groupType === "solo" && !form.numberOfPeople) {
+      setForm((prev) => ({ ...prev, numberOfPeople: 1 }));
+    }
+    if (form.groupType !== "solo" && form.numberOfPeople === 1) {
+      setForm((prev) => ({ ...prev, numberOfPeople: undefined }));
+    }
+  }, [form.groupType]);
 
   const [loading, setLoading] = useState(false);
 
@@ -80,7 +93,7 @@ export default function GenerateTripPage() {
       });
 
       if (res.ok) {
-        await res.json(); // Removed unused assignment to `data`
+        await res.json(); // Don't need the result now
         router.push("/trips");
       } else {
         const error = await res.json();
@@ -148,7 +161,8 @@ export default function GenerateTripPage() {
               <Input
                 type="number"
                 name="numberOfPeople"
-                value={form.numberOfPeople}
+                value={form.numberOfPeople ?? ""}
+                placeholder="e.g. 2"
                 min={1}
                 onChange={handleChange}
               />
@@ -159,7 +173,8 @@ export default function GenerateTripPage() {
               <Input
                 type="number"
                 name="days"
-                value={form.days}
+                value={form.days ?? ""}
+                placeholder="e.g. 4"
                 min={1}
                 onChange={handleChange}
               />
@@ -170,7 +185,8 @@ export default function GenerateTripPage() {
               <Input
                 type="number"
                 name="budget"
-                value={form.budget}
+                value={form.budget ?? ""}
+                placeholder="e.g. 15000"
                 min={0}
                 step={100}
                 onChange={handleChange}
