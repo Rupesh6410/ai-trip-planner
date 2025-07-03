@@ -1,36 +1,121 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🗺️ AI Trip Planner
 
-## Getting Started
+AI-powered travel planner that generates a personalized itinerary based on user preferences like destination, group type, budget, and duration.
 
-First, run the development server:
+## 🔧 Tech Stack
+
+- **Next.js** (App Router)
+- **TypeScript**
+- **Tailwind CSS** + **ShadCN UI**
+- **Framer Motion** – animations
+- **Prisma ORM** – PostgreSQL (via Neon)
+- **Auth.js** – Google OAuth
+- **Vercel** – deployment
+- **Gemini API (via @google/generative-ai)** – AI itinerary generation
+
+---
+
+## ✨ Features
+
+- 🔐 Authenticated user experience with Google login
+- 🧠 AI-generated itineraries with:
+  - Daily activity schedule
+  - Hotel and hostel recommendations
+  - Pro travel tips
+- 🧳 Save & view trip plans
+- 🚦 Status feedback during generation (animated loading states)
+- 📅 Trip history page (planned)
+- 🗑️ Delete trips securely
+
+---
+
+## 🖥️ Getting Started
+
+### 1. Clone the repo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+git clone https://github.com/yourusername/ai-trip-planner.git
+cd ai-trip-planner
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Install dependencies
+npm install
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. Set up environment variables
+Create a .env file based on .env.example:
 
-## Learn More
+cp .env.example .env
+Fill in:
 
-To learn more about Next.js, take a look at the following resources:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+DATABASE_URL=your_neon_postgres_url
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+NEXTAUTH_URL=http://localhost:3000
+NEXTAUTH_SECRET=some-random-secret
+⚠️ In Vercel environment variables, don’t include quotes.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+4. Prisma setup
 
-## Deploy on Vercel
+npx prisma generate
+npx prisma db push
+🧪 Dev Commands
+bash
+Copy
+Edit
+npm run dev      # Start dev server
+npm run build    # Production build
+npm run lint     # Lint check
+🚀 Deploying on Vercel
+Push to GitHub
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Import into Vercel
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Add these Vercel environment variables:
+
+
+DATABASE_URL
+GOOGLE_CLIENT_ID
+GOOGLE_CLIENT_SECRET
+NEXTAUTH_URL=https://your-vercel-domain.vercel.app
+NEXTAUTH_SECRET
+Add npx prisma generate as a Vercel Build Command override:
+
+Build Command:npx prisma generate && next build
+
+
+📄 Google OAuth Configuration
+Go to: https://console.cloud.google.com/apis/credentials
+
+Ensure you:
+
+Add http://localhost:3000 and https://your-vercel-domain.vercel.app to Authorized Redirect URIs
+
+Use /api/auth/callback/google as the redirect path
+
+📂 Folder Structure
+
+src/
+  app/
+    api/
+      generate-trip/
+      trips/
+    trips/
+    components/
+    lib/
+      prisma.ts
+  prisma/
+    schema.prisma
+
+
+🧠 Coming Soon
+🌐 Image generation for destinations using Gemini + Cloudinary
+
+📊 Analytics Dashboard
+
+⏰ Scheduled Trips
+
+🧵 Trip templates
+
+👨‍💻 Author
+Built by Rupesh Kumar. Powered by Gemini & Next.js.
