@@ -3,59 +3,56 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "../../../../../auth";
 import { prisma } from "../../../../../lib/prisma";
 
-export async function GET(
-  req: NextRequest, // The incoming request object
-  // Directly type the second argument with the expected structure
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: NextRequest) {
   const session = await auth();
 
-  // Check if the user is authenticated
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").pop();
+
+  if (!id || typeof id !== "string") {
+    return NextResponse.json({ error: "Invalid trip ID" }, { status: 400 });
+  }
+
   try {
-    // Find the trip by its ID
     const trip = await prisma.trip.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
-    // If no trip is found, return a 404 error
     if (!trip) {
       return NextResponse.json({ error: "Trip not found" }, { status: 404 });
     }
 
-    // Return the trip data
     return NextResponse.json(trip);
   } catch (error) {
-    // Log the error and return a 500 status code for server errors
     console.error("Error fetching trip:", error);
-    return NextResponse.json({"error": "Something went wrong" }, { status: 500 });
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }
 
-export async function DELETE(
-  req: NextRequest, // The incoming request object
-  // Directly type the second argument with the expected structure
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: NextRequest) {
   const session = await auth();
 
-  // Check if the user is authenticated
   if (!session || !session.user?.email) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const url = new URL(req.url);
+  const id = url.pathname.split("/").pop();
+
+  if (!id || typeof id !== "string") {
+    return NextResponse.json({ error: "Invalid trip ID" }, { status: 400 });
+  }
+
   try {
-    // Find the trip by its ID and include the associated user
     const trip = await prisma.trip.findUnique({
-      where: { id: params.id },
-      include: { user: true }, // Include user to check ownership
+      where: { id },
+      include: { user: true },
     });
 
-    // If no trip is found, or the trip's user email doesn't match the session user's email,
-    // return a 403 (Forbidden) error
     if (!trip || trip.user.email !== session.user.email) {
       return NextResponse.json(
         { error: "Trip not found or access denied" },
@@ -63,15 +60,12 @@ export async function DELETE(
       );
     }
 
-    // Delete the trip from the database
     await prisma.trip.delete({
-      where: { id: params.id },
+      where: { id },
     });
 
-    // Return a success message
     return NextResponse.json({ message: "Trip deleted successfully" });
   } catch (error) {
-    // Log the error and return a 500 status code for server errors
     console.error("Error deleting trip:", error);
     return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
