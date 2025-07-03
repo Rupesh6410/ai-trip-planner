@@ -1,9 +1,9 @@
 // app/api/trips/route.ts
-import { NextRequest, NextResponse } from "next/server";
+import {  NextResponse } from "next/server";
 import { auth } from "../../../../auth";
 import { prisma } from "../../../../lib/prisma";
 
-export async function GET(req: NextRequest) {
+export async function GET() {
   const session = await auth();
 
   if (!session || !session.user?.email) {

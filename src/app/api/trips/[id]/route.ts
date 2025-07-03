@@ -23,8 +23,8 @@ export async function GET(
     }
 
     return NextResponse.json(trip);
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json({"error": "Something went wrong" }, { status: 500 });
   }
 }
 
@@ -56,7 +56,7 @@ export async function DELETE(
     });
 
     return NextResponse.json({ message: "Trip deleted successfully" });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json({ error: "Something went wrong" }, { status: 500 });
   }
 }

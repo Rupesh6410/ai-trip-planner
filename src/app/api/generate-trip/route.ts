@@ -63,14 +63,14 @@ export async function POST(req: NextRequest) {
         numberOfPeople,
         days,
         budget: parseInt(budget), // If budget is string
-        result: finalTripData as any,
+        result: finalTripData ,
       },
     });
 
     console.log("Trip saved:", trip.id);
     return NextResponse.json(trip);
-  } catch (err: any) {
+  } catch (err) {
     console.error("Error creating trip:", err);
-    return NextResponse.json({ error: `Server error: ${err.message}` }, { status: 500 });
+    return NextResponse.json({ error: `Server error` }, { status: 500 });
   }
 }

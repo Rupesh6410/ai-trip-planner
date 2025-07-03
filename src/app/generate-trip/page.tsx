@@ -13,9 +13,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import { Loader2 } from "lucide-react";
 import { MultiStepLoader as Loader } from "../../components/ui/multi-step-loader";
 import { IconSquareRoundedX } from "@tabler/icons-react";
 
@@ -24,30 +29,14 @@ export default function GenerateTripPage() {
   const router = useRouter();
 
   const loadingStates = [
-    {
-      text: "Wait",
-    },
-    {
-      text: "Planning your trip",
-    },
-    {
-      text: "Generating itinerary",
-    },
-    {
-      text: "Fetching Hotels and Hostels",
-    },
-    {
-      text: "Good things take time",
-    },
-    {
-      text: "Remember pro tips",
-    },
-    {
-      text: "Almost there",
-    },
-    {
-      text: "Hope you will enjoy it",
-    },
+    { text: "Wait" },
+    { text: "Planning your trip" },
+    { text: "Generating itinerary" },
+    { text: "Fetching Hotels and Hostels" },
+    { text: "Good things take time" },
+    { text: "Remember pro tips" },
+    { text: "Almost there" },
+    { text: "Hope you will enjoy it" },
   ];
 
   useEffect(() => {
@@ -72,9 +61,10 @@ export default function GenerateTripPage() {
     const { name, value } = e.target;
     setForm((prev) => ({
       ...prev,
-      [name]: name === "budget" || name === "numberOfPeople" || name === "days"
-        ? Number(value)
-        : value,
+      [name]:
+        name === "budget" || name === "numberOfPeople" || name === "days"
+          ? Number(value)
+          : value,
     }));
   };
 
@@ -90,13 +80,13 @@ export default function GenerateTripPage() {
       });
 
       if (res.ok) {
-        const data = await res.json();
+        await res.json(); // Removed unused assignment to `data`
         router.push("/trips");
       } else {
         const error = await res.json();
         alert(error.error || "Failed to generate trip");
       }
-    } catch (err) {
+    } catch {
       alert("Something went wrong. Try again.");
     } finally {
       setLoading(false);
@@ -137,7 +127,9 @@ export default function GenerateTripPage() {
               <Label htmlFor="groupType">Group Type</Label>
               <Select
                 value={form.groupType}
-                onValueChange={(value) => setForm((prev) => ({ ...prev, groupType: value }))}
+                onValueChange={(value) =>
+                  setForm((prev) => ({ ...prev, groupType: value }))
+                }
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select group type" />
@@ -187,26 +179,32 @@ export default function GenerateTripPage() {
 
             <Separator />
 
-            
+            <Loader
+              loadingStates={loadingStates}
+              loading={loading}
+              duration={2000}
+            />
 
-            <Loader loadingStates={loadingStates} loading={loading} duration={2000} />
-
-            <Button  onClick={() => setLoading(true)}
-        className="bg-[#39C3EF] hover:bg-[#39C3EF]/90 text-black mx-auto text-sm md:text-base transition font-medium duration-200 h-10 rounded-lg px-8 flex items-center justify-center"
-        style={{
-          boxShadow:
-            "0px -1px 0px 0px #ffffff40 inset, 0px 1px 0px 0px #ffffff40 inset",
-        }} type="submit" >
+            <Button
+              onClick={() => setLoading(true)}
+              className="bg-[#39C3EF] hover:bg-[#39C3EF]/90 text-black mx-auto text-sm md:text-base transition font-medium duration-200 h-10 rounded-lg px-8 flex items-center justify-center"
+              style={{
+                boxShadow:
+                  "0px -1px 0px 0px #ffffff40 inset, 0px 1px 0px 0px #ffffff40 inset",
+              }}
+              type="submit"
+            >
               Generate Itinerary
             </Button>
+
             {loading && (
-        <button
-          className="fixed top-4 right-4 text-black dark:text-white z-[120]"
-          onClick={() => setLoading(false)}
-        >
-          <IconSquareRoundedX className="h-10 w-10" />
-        </button>
-      )}
+              <button
+                className="fixed top-4 right-4 text-black dark:text-white z-[120]"
+                onClick={() => setLoading(false)}
+              >
+                <IconSquareRoundedX className="h-10 w-10" />
+              </button>
+            )}
           </form>
         </CardContent>
       </Card>

@@ -188,44 +188,9 @@ export async function generateTripPlan({
     
 
     return parsedResult; // Return the parsed JSON object
-  } catch (error: any) {
+  } catch (error ) {
     console.error("Error generating trip plan with Gemini:", error);
-    throw new Error(`Failed to generate trip plan: ${error.message}`);
+    throw new Error(`Failed to generate trip plan`);
   }
 }
 
-/**
- * Generates an image for a given place using Imagen.
- * Returns a base64 encoded image string.
- */
-export async function generatePlaceImage(placeName: string, destination: string): Promise<string | null> {
-  const imagePrompt = `A high-quality, realistic photograph of ${placeName} in ${destination}. Focus on the iconic aspects and natural beauty of the location.`;
-  const imageModelName = "imagen-3.0-generate-002"; // Use Imagen for image generation
-
-  try {
-    const imagePayload = { instances: { prompt: imagePrompt }, parameters: { "sampleCount": 1 } };
-    // For Imagen, the API call is a direct fetch, not through the genAI client
-    const imageUrl = `https://generativelanguage.googleapis.com/v1beta/models/${imageModelName}:predict?key=${process.env.GEMINI_API_KEY || ""}`;
-
-    const imageResponse = await fetch(imageUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(imagePayload)
-    });
-
-    if (!imageResponse.ok) {
-      const errorBody = await imageResponse.json();
-      console.error(`Imagen API error for ${placeName}:`, errorBody);
-      return null;
-    }
-
-    const imageResult = await imageResponse.json();
-    if (imageResult.predictions && imageResult.predictions.length > 0 && imageResult.predictions[0].bytesBase64Encoded) {
-      return imageResult.predictions[0].bytesBase64Encoded; // Return base64 string
-    }
-    return null;
-  } catch (error) {
-    console.error(`Error generating image for ${placeName}:`, error);
-    return null;
-  }
-}
