@@ -64,7 +64,7 @@ export default function GenerateTripPage() {
     if (form.groupType !== "solo" && form.numberOfPeople === 1) {
       setForm((prev) => ({ ...prev, numberOfPeople: undefined }));
     }
-  }, [form.groupType]);
+  }, [form.groupType , form.numberOfPeople]);
 
   const [loading, setLoading] = useState(false);
 
