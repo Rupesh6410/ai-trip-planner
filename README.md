@@ -63,9 +63,7 @@ NEXTAUTH_SECRET=some-random-secret
 npx prisma generate
 npx prisma db push
 🧪 Dev Commands
-bash
-Copy
-Edit
+
 npm run dev      # Start dev server
 npm run build    # Production build
 npm run lint     # Lint check
