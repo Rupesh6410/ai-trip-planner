@@ -187,7 +187,7 @@ export default function GenerateTripPage() {
                 name="budget"
                 value={form.budget ?? ""}
                 placeholder="e.g. 15000"
-                min={0}
+                min={500}
                 step={100}
                 onChange={handleChange}
               />
